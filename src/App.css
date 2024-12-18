@@ -1,0 +1,159 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.app-container {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 90%;
+  max-width: 800px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #333333;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.reset-button {
+  background-color: #f44336;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+.reset-button:hover {
+  background-color: #e53935;
+}
+
+.button-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 2rem;
+}
+
+.file-upload-section,
+.file-download-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+
+.file-upload-section {
+  border-right: 1px solid #e0e0e0;
+  padding-right: 2rem;
+}
+
+.file-download-section {
+  padding-left: 2rem;
+}
+
+.file-input-label {
+  /* background-color: #f0f0f0; */
+  background-color: #121212;
+  border: 1px solid #cccccc;
+  padding: 0.8rem 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  text-align: center;
+}
+
+.file-input-label:hover {
+  background-color: #e0e0e0;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-button,
+.download-button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.upload-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.upload-button:hover {
+  background-color: #45a049;
+}
+
+.download-button {
+  background-color: #2196f3;
+  color: white;
+}
+
+.download-button:disabled {
+  background-color: #bbbbbb;
+  cursor: not-allowed;
+}
+
+.download-button:hover:not(:disabled) {
+  background-color: #0b7dda;
+}
+
+.passphrase-input {
+  padding: 0.8rem;
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.error-text {
+  color: #f44336;
+  font-size: 0.9rem;
+}
+
+.passphrase-display {
+  color: #d32f2f;
+  margin-top: 1.5rem;
+  font-weight: bold;
+}
+
+.file-list {
+  margin-top: 2rem;
+  text-align: left;
+}
+
+.file-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.file-list li {
+  background-color: #f9f9f9;
+  padding: 0.8rem;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+  color: #333333;
+}
