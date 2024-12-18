@@ -14,6 +14,13 @@ const App: React.FC = () => {
 
   const [isUpload, setIsUpload] = useState<boolean>(true);
 
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+
+  const [downloadProgress, setDownloadProgress] = useState<number>(0);
+
+  const [isApiCallProgress, setIsApiCallProgress] = useState<boolean>(false);
+
+
   const handleFileSelect = (event: ChangeEvent<HTMLInputElement>): void => {
     const files = event.target.files ? Array.from(event.target.files) : [];
     setSelectedFiles(files);
@@ -21,14 +28,22 @@ const App: React.FC = () => {
 
   const handleUpload = async () => {
     if (selectedFiles.length > 0) {
-      let resp = await uploadFiles(selectedFiles);
-      setReceivedPassphrase(resp?.downloadPassphrase)
-      console.log(resp?.downloadPassphrase)
+      setIsApiCallProgress(true);
+      try {
+        const resp = await uploadFiles(selectedFiles, setUploadProgress);
+        setReceivedPassphrase(resp?.downloadPassphrase);
+      } catch (err) {
+        console.error("Upload failed", err);
+      }
+      finally {
+        setIsApiCallProgress(false);
+      }
 
     } else {
       alert("Please select files to upload.");
     }
   };
+
 
   // Validate and set the passphrase
   const handlePassphraseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,15 +62,24 @@ const App: React.FC = () => {
       setError('Passphrase must be exactly 6 alphanumeric characters.');
       return;
     }
-    downloadFile(enteredPassphrase);
-  }
+    try {
+      setIsApiCallProgress(true);
+
+      await downloadFile(enteredPassphrase, setDownloadProgress);
+    } catch (err) {
+      console.error("Download failed", err);
+    }
+    finally {
+      setIsApiCallProgress(false);
+    }
+  };
 
   const handleReset = async () => {
 
-    if(isUpload){
+    if (isUpload) {
       setSelectedFiles([]);
       setReceivedPassphrase('');
-    }else{
+    } else {
       setEnteredPassphrase('');
       setError('');
     }
@@ -68,7 +92,8 @@ const App: React.FC = () => {
         {/* Slider Toggle */}
         <SliderToggle isUpload={isUpload} onToggle={setIsUpload} />
 
-        <button onClick={handleReset} className="secondary-button reset-button">
+        <button onClick={handleReset} className={isApiCallProgress?"secondary-button reset-button disabled":"secondary-button reset-button"} disabled={isApiCallProgress}
+        >
           Reset Section
         </button>
       </div>
@@ -85,13 +110,23 @@ const App: React.FC = () => {
             onChange={handleFileSelect}
             className="file-input"
             multiple
+            disabled={isApiCallProgress}
+
           />
-          <button onClick={handleUpload} className="primary-button">
+          <button onClick={handleUpload} className="primary-button" disabled={isApiCallProgress}
+          >
             Upload
           </button>
+
+          {uploadProgress > 0 && uploadProgress < 100 && (
+            <div className="progress-bar">
+              <div style={{ width: `${uploadProgress}%` }}>{uploadProgress}%</div>
+            </div>
+          )}
+
           {selectedFiles.length > 0 && (
             <div className="file-list">
-              <p style={{color:"black"}}>Selected Files</p>
+              <p style={{ color: "black" }}>Selected Files</p>
               <ul>
                 {selectedFiles.map((file, index) => (
                   <li key={index}>{file.name}</li>
@@ -115,15 +150,22 @@ const App: React.FC = () => {
             value={enteredPassphrase}
             onChange={handlePassphraseChange}
             className="text-input"
+            disabled={isApiCallProgress}
+
           />
           {error && <div className="error-text">{error}</div>}
           <button
             onClick={downloadFileHandler}
             className="primary-button"
-            disabled={enteredPassphrase.length !== 6}
+            disabled={isApiCallProgress || enteredPassphrase.length !== 6}
           >
             Download
           </button>
+          {downloadProgress > 0 && downloadProgress < 100 && (
+            <div className="progress-bar">
+              <div style={{ width: `${downloadProgress}%` }}>{downloadProgress}%</div>
+            </div>
+          )}
         </div>)}
 
     </div>
