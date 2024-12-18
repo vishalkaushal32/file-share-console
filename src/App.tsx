@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import "./App.css";
-import { downloadFile, uploadFiles } from "./helper/api-helper";
+import { downloadFile, uploadFiles, UPLOAD_URI ,DOWNLOAD_URI } from "./helper/api-helper";
 import SliderToggle from "./components/shared/slider/SliderToggle";
 
 const App: React.FC = () => {
@@ -92,7 +92,7 @@ const App: React.FC = () => {
         {/* Slider Toggle */}
         <SliderToggle isUpload={isUpload} onToggle={setIsUpload} />
 
-        <button onClick={handleReset} className={isApiCallProgress?"secondary-button reset-button disabled":"secondary-button reset-button"} disabled={isApiCallProgress}
+        <button onClick={handleReset} className={isApiCallProgress ? "secondary-button reset-button disabled" : "secondary-button reset-button"} disabled={isApiCallProgress}
         >
           Reset Section
         </button>
